@@ -10,6 +10,8 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import crmRoutes from "./src/routes/crmRoutes";
 import articleRoutes from "./src/routes/articleRoutes";
+import { errorHandler } from "./src/middleware/error.middleware";
+import { notFoundHandler } from "./src/middleware/not-found.middleware";
 
 dotenv.config();
 /**
@@ -45,14 +47,18 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Routes
+crmRoutes(app);
+articleRoutes(app);
+
+// Error Handlers
+app.use(errorHandler);
+app.use(notFoundHandler);
+
 /**
  * Server Activation
  */
-
 app.listen(PORT, () => console.log(`Your server is running on port ${PORT}`));
-
-crmRoutes(app);
-articleRoutes(app);
 
 app.get("/", (req: Request, res: Response) =>
   res.send(`Node and express server is running on port ${PORT}`)
