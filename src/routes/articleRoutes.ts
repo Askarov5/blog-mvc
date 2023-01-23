@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
+import { checkJwt } from "../middleware/authz.middleware";
+
 import {
   addNewArticle,
   getArticles,
@@ -7,30 +9,32 @@ import {
   deleteArticle,
 } from "../controllers/articleController";
 
-const routes = (app: any) => {
-  app
-    .route("/posts")
-    // get all articles
-    .get((req: Request, res: Response, next: NextFunction) => {
-      // middleware
-      console.log(`Request from: ${req.originalUrl}`);
-      console.log(`Request type: ${req.method}`);
-      next();
-    }, getArticles);
+export const articleRouter = express.Router();
 
-  // post a new article
-  app.route("/post").post(addNewArticle);
+articleRouter
+  .route("/posts")
+  // get all articles
+  .get((req: Request, res: Response, next: NextFunction) => {
+    // middleware
+    console.log(`Request from: ${req.originalUrl}`);
+    console.log(`Request type: ${req.method}`);
+    next();
+  }, getArticles);
 
-  app
-    .route("/post/:articleId")
-    // get specific article
-    .get(getArticleWithID)
+articleRouter
+  .route("/post/:articleId")
+  // get specific article
+  .get(getArticleWithID);
 
-    // update a article
-    .put(updateArticle)
+articleRouter.use(checkJwt);
 
-    // to delete a article
-    .delete(deleteArticle);
-};
+// post a new article
+articleRouter.route("/post").post(addNewArticle);
 
-export default routes;
+// update a article
+articleRouter
+  .route("/post/:articleId")
+  .put(updateArticle)
+
+  // to delete a article
+  .delete(deleteArticle);

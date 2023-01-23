@@ -35,4 +35,4 @@ export const ContactSchema = new Schema<IContact>({
 });
 
 // Create a Model.
-export const Contact = model<IContact>("User", ContactSchema);
+export const Contact = model<IContact>("Contacts", ContactSchema);

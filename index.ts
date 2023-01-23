@@ -8,8 +8,8 @@ import cors from "cors";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import crmRoutes from "./src/routes/crmRoutes";
-import articleRoutes from "./src/routes/articleRoutes";
+import { crmRouter } from "./src/routes/crmRoutes";
+import { articleRouter } from "./src/routes/articleRoutes";
 import { errorHandler } from "./src/middleware/error.middleware";
 import { notFoundHandler } from "./src/middleware/not-found.middleware";
 
@@ -48,8 +48,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Routes
-crmRoutes(app);
-articleRoutes(app);
+app.use(crmRouter);
+app.use(articleRouter);
 
 // Error Handlers
 app.use(errorHandler);

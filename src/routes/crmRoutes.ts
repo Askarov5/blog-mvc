@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
+import { checkJwt } from "../middleware/authz.middleware";
+
 import {
   addNewContact,
   getContacts,
@@ -7,30 +9,32 @@ import {
   deleteContact,
 } from "../controllers/crmController";
 
-const routes = (app: any) => {
-  app
-    .route("/contact")
-    // get all contacts
-    .get((req: Request, res: Response, next: NextFunction) => {
-      // middleware
-      console.log(`Request from: ${req.originalUrl}`);
-      console.log(`Request type: ${req.method}`);
-      next();
-    }, getContacts)
+export const crmRouter = express.Router();
 
-    // post a new contact
-    .post(addNewContact);
+crmRouter
+  .route("/contacts")
+  // get all contacts
+  .get((req: Request, res: Response, next: NextFunction) => {
+    // middleware
+    console.log(`Request from: ${req.originalUrl}`);
+    console.log(`Request type: ${req.method}`);
+    next();
+  }, getContacts);
 
-  app
-    .route("/contact/:contactId")
-    // get specific contact
-    .get(getContactWithID)
+crmRouter
+  .route("/contact/:contactId")
+  // get specific contact
+  .get(getContactWithID);
 
-    // update a contact
-    .put(updateContact)
+crmRouter.use(checkJwt);
 
-    // to delete a contact
-    .delete(deleteContact);
-};
+// post a new contact
+crmRouter.route("/contact").post(addNewContact);
 
-export default routes;
+// update a contact
+crmRouter
+  .route("/contact/:contactId")
+  .put(updateContact)
+
+  // to delete a contact
+  .delete(deleteContact);
