@@ -8,7 +8,8 @@ import cors from "cors";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import routes from "./src/routes/crmRoutes";
+import crmRoutes from "./src/routes/crmRoutes";
+import articleRoutes from "./src/routes/articleRoutes";
 
 dotenv.config();
 /**
@@ -50,7 +51,8 @@ app.use(bodyParser.json());
 
 app.listen(PORT, () => console.log(`Your server is running on port ${PORT}`));
 
-routes(app);
+crmRoutes(app);
+articleRoutes(app);
 
 app.get("/", (req: Request, res: Response) =>
   res.send(`Node and express server is running on port ${PORT}`)

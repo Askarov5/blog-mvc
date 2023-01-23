@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
-import mongoose from "mongoose";
-import { ContactSchema } from "../models/crmModel";
-
-const Contact = mongoose.model("Contact", ContactSchema);
+import { Contact } from "../models/crmModel";
 
 export const addNewContact = (req: Request, res: Response) => {
   let newContact = new Contact(req.body);
