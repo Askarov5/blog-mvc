@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { Contact } from "../models/crmModel";
+import { Contact, IContact } from "../models/crmModel";
 
 export const addNewContact = (req: Request, res: Response) => {
   let newContact = new Contact(req.body);
 
-  newContact.save((err, contact) => {
+  newContact.save((err: any, contact: IContact) => {
     if (err) {
       res.status(500).send(err);
     }
@@ -13,7 +13,7 @@ export const addNewContact = (req: Request, res: Response) => {
 };
 
 export const getContacts = (req: Request, res: Response) => {
-  Contact.find({}, (err: any, contact: typeof Contact) => {
+  Contact.find({}, (err: any, contact: IContact) => {
     if (err) {
       res.send(err);
     }
@@ -22,15 +22,12 @@ export const getContacts = (req: Request, res: Response) => {
 };
 
 export const getContactWithID = (req: Request, res: Response) => {
-  Contact.findById(
-    req.params.contactId,
-    (err: any, contact: typeof Contact) => {
-      if (err) {
-        res.send(err);
-      }
-      res.json(contact);
+  Contact.findById(req.params.contactId, (err: any, contact: IContact) => {
+    if (err) {
+      res.send(err);
     }
-  );
+    res.json(contact);
+  });
 };
 
 export const updateContact = (req: Request, res: Response) => {
@@ -48,7 +45,7 @@ export const updateContact = (req: Request, res: Response) => {
 };
 
 export const deleteContact = (req: Request, res: Response) => {
-  Contact.remove({ _id: req.params.contactId }, (err) => {
+  Contact.remove({ _id: req.params.contactId }, (err: any) => {
     if (err) {
       res.send(err);
     }

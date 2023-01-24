@@ -30,6 +30,11 @@ const app = express();
  */
 app.use(helmet());
 app.use(cors());
+//bodyparser setup
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// serving static files
+app.use(express.static("./static"));
 // mongoose connection
 mongoose.Promise = global.Promise;
 mongoose
@@ -38,14 +43,11 @@ mongoose
     /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
   })
   .catch((err: Error) => {
-    console.log(
+    console.error(
       "MongoDB connection error. Please make sure MongoDB is running. " + err
     );
-    process.exit();
+    process.exit(1);
   });
-//bodyparser setup
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 // Routes
 app.use(crmRouter);

@@ -1,6 +1,6 @@
 import { Schema, model, connect } from "mongoose";
 
-interface IArticle {
+export interface IArticle {
   author: string;
   article: string;
   imageUrl?: string;

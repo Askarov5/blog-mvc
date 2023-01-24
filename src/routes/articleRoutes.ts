@@ -12,7 +12,7 @@ import {
 export const articleRouter = express.Router();
 
 articleRouter
-  .route("/posts")
+  .route("/articles")
   // get all articles
   .get((req: Request, res: Response, next: NextFunction) => {
     // middleware
@@ -22,18 +22,18 @@ articleRouter
   }, getArticles);
 
 articleRouter
-  .route("/post/:articleId")
+  .route("/article/:articleId")
   // get specific article
   .get(getArticleWithID);
 
 articleRouter.use(checkJwt);
 
 // post a new article
-articleRouter.route("/post").post(addNewArticle);
+articleRouter.route("/article").post(addNewArticle);
 
 // update a article
 articleRouter
-  .route("/post/:articleId")
+  .route("/article/:articleId")
   .put(updateArticle)
 
   // to delete a article
